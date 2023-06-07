@@ -39,10 +39,13 @@ internal class Program
                 var author = dbTupleElement.Elements().FirstOrDefault(e => e.Name.LocalName == "USER_REC")?.Value;
                 var filename = dbTupleElement.Elements().FirstOrDefault(e => e.Name.LocalName == "FILE")?.Value;
 
+                // Pole přípon
+                string[] extensions = new string[] { ".mp3", ".wav" };
+
                 // Najděte odpovídající řádek v Excelu
                 var rowNumber = 1;
                 var totalRows = worksheet.Dimension?.Rows ?? 1; // získejte počet řádků nebo nastavte na 1, pokud není definováno
-                while (rowNumber <= totalRows && (worksheet.Cells[rowNumber, 1].Value == null || !worksheet.Cells[rowNumber, 1].Value.ToString().EndsWith(".mp3") || worksheet.Cells[rowNumber, 1].Value.ToString() != filename))
+                while (rowNumber <= totalRows && (worksheet.Cells[rowNumber, 1].Value == null || !extensions.Any(ext => worksheet.Cells[rowNumber, 1].Value.ToString().EndsWith(ext)) || worksheet.Cells[rowNumber, 1].Value.ToString() != filename))
                     rowNumber++;
 
                 // Pokud byl nalezen odpovídající řádek, aktualizujte data v Excelu
